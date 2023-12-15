@@ -16,11 +16,15 @@ type Parse struct {
 }
 
 type ImageResult struct {
-	Date              string
-	ThumbImageUrl     string
-	OriginalImageUrl  string
-	OriginalImageLink string
-	ImageDesc         string
+	Date           string `json:"date"`
+	ThumbImageUrl  string `json:"thumb_image_url"`
+	ThumbImageFile string `json:"thumb_image_file"`
+
+	OriginalImageUrl  string `json:"original_image_url"`
+	OriginalImageFile string `json:"original_image_file"`
+
+	OriginalImageLink string `json:"original_image_link"`
+	ImageDesc         string `json:"image_desc"`
 }
 
 const websiteUrl = "https://zh.wikipedia.org"

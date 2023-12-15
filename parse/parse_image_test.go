@@ -1,7 +1,6 @@
 package parse
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -12,10 +11,10 @@ func TestParse_ParseImage(t *testing.T) {
 		panic(err)
 	}
 	for _, imageResult := range result {
-		fmt.Println(imageResult.Date)
-		fmt.Println(imageResult.ThumbImageUrl)
-		fmt.Println(imageResult.OriginalImageUrl)
-		fmt.Println()
+		t.Log(imageResult.Date)
+		t.Log(imageResult.ThumbImageUrl)
+		t.Log(imageResult.OriginalImageUrl)
+		t.Log()
 	}
 }
 

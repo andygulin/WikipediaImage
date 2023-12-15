@@ -2,6 +2,7 @@ package store
 
 import (
 	. "WikipediaImage/parse"
+	. "WikipediaImage/tool"
 	"fmt"
 	"github.com/google/uuid"
 	"io"
@@ -16,13 +17,13 @@ type StoreFile string
 type Store struct {
 }
 
-var rootDir = "store_image"
+func (store *Store) StoreImage(imageResults []ImageResult) ([]ImageResult, error) {
+	var rets []ImageResult
 
-func (store *Store) StoreImage(imageResults []ImageResult) error {
 	pwd, _ := os.Getwd()
 
 	for _, result := range imageResults {
-		dir, _ := filepath.Abs(filepath.Join(pwd, rootDir, result.Date))
+		dir, _ := filepath.Abs(filepath.Join(pwd, RootDir, result.Date))
 		err := os.MkdirAll(dir, 0755)
 		if err != nil {
 			panic(err)
@@ -39,14 +40,19 @@ func (store *Store) StoreImage(imageResults []ImageResult) error {
 		if err != nil {
 			panic(err)
 		}
-		fmt.Printf("store image : %s\n", originStoreFile)
 
-		desc := []byte(result.ImageDesc)
-		descFile, _ := filepath.Abs(filepath.Join(dir, "description.txt"))
-		_ = os.WriteFile(descFile, desc, 0755)
-		fmt.Printf("store image desc: %s\n", descFile)
+		ret := result
+
+		idx := strings.Index(string(thumbStoreFile), RootDir) + len(RootDir) + 1
+		ret.ThumbImageFile = string(thumbStoreFile)[idx:]
+
+		idx = strings.Index(string(originStoreFile), RootDir) + len(RootDir) + 1
+		ret.OriginalImageFile = string(originStoreFile)[idx:]
+		rets = append(rets, ret)
+
+		fmt.Printf("store image : %s\n", originStoreFile)
 	}
-	return nil
+	return rets, nil
 }
 
 func writeFileToDisk(url string, dir string, thumb bool) (StoreFile, error) {

@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	. "WikipediaImage/index"
 	. "WikipediaImage/parse"
 	. "WikipediaImage/store"
 	"fmt"
@@ -21,8 +22,15 @@ var rootCmd = &cobra.Command{
 		if err != nil {
 			panic(err)
 		}
+
 		store := Store{}
-		err = store.StoreImage(result)
+		rets, err := store.StoreImage(result)
+		if err != nil {
+			panic(err)
+		}
+
+		index := IndexResult{Year: year, Month: month, ImageResults: rets}
+		err = index.WriteIndex()
 		if err != nil {
 			panic(err)
 		}
