@@ -1,15 +1,16 @@
 package store
 
 import (
-	. "WikipediaImage/parse"
-	. "WikipediaImage/tool"
+	"WikipediaImage/parse"
+	"WikipediaImage/tool"
 	"fmt"
-	"github.com/google/uuid"
 	"io"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/google/uuid"
 )
 
 type StoreFile string
@@ -17,13 +18,13 @@ type StoreFile string
 type Store struct {
 }
 
-func (store *Store) StoreImage(imageResults []ImageResult) ([]ImageResult, error) {
-	var rets []ImageResult
+func (store *Store) StoreImage(imageResults []parse.ImageResult) ([]parse.ImageResult, error) {
+	var rets []parse.ImageResult
 
 	pwd, _ := os.Getwd()
 
 	for _, result := range imageResults {
-		dir, _ := filepath.Abs(filepath.Join(pwd, RootDir, result.Date))
+		dir, _ := filepath.Abs(filepath.Join(pwd, tool.RootDir, result.Date))
 		err := os.MkdirAll(dir, 0755)
 		if err != nil {
 			panic(err)
@@ -43,10 +44,10 @@ func (store *Store) StoreImage(imageResults []ImageResult) ([]ImageResult, error
 
 		ret := result
 
-		idx := strings.Index(string(thumbStoreFile), RootDir) + len(RootDir) + 1
+		idx := strings.Index(string(thumbStoreFile), tool.RootDir) + len(tool.RootDir) + 1
 		ret.ThumbImageFile = string(thumbStoreFile)[idx:]
 
-		idx = strings.Index(string(originStoreFile), RootDir) + len(RootDir) + 1
+		idx = strings.Index(string(originStoreFile), tool.RootDir) + len(tool.RootDir) + 1
 		ret.OriginalImageFile = string(originStoreFile)[idx:]
 		rets = append(rets, ret)
 

@@ -1,13 +1,14 @@
 package parse
 
 import (
-	. "WikipediaImage/tool"
+	"WikipediaImage/tool"
 	"fmt"
-	"github.com/PuerkitoBio/goquery"
 	"io"
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/PuerkitoBio/goquery"
 )
 
 type Parse struct {
@@ -32,7 +33,7 @@ const websiteProtocol = "https"
 const baseUrl = websiteUrl + "/wiki/Wikipedia:%E6%AF%8F%E6%97%A5%E5%9B%BE%E7%89%87/"
 
 func (parse *Parse) ParseImage() ([]ImageResult, error) {
-	url := baseUrl + FormatDate(parse.Year, parse.Month)
+	url := baseUrl + tool.FormatDate(parse.Year, parse.Month)
 
 	client := http.Client{Timeout: time.Second * 15}
 	res, err := client.Get(url)

@@ -1,8 +1,8 @@
 package index
 
 import (
-	. "WikipediaImage/parse"
-	. "WikipediaImage/tool"
+	"WikipediaImage/parse"
+	"WikipediaImage/tool"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -12,13 +12,13 @@ import (
 type IndexResult struct {
 	Year         int
 	Month        int
-	ImageResults []ImageResult
+	ImageResults []parse.ImageResult
 }
 
 func (index *IndexResult) WriteIndex() error {
 	pwd, _ := os.Getwd()
 
-	dir, _ := filepath.Abs(filepath.Join(pwd, RootDir))
+	dir, _ := filepath.Abs(filepath.Join(pwd, tool.RootDir))
 	indexFile, _ := filepath.Abs(filepath.Join(dir, fmt.Sprintf("index_%d_%d.json", index.Year, index.Month)))
 
 	content, err := json.MarshalIndent(index.ImageResults, "", "	")
